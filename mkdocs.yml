@@ -1,4 +1,4 @@
-site_name: Argo CD Component
+site_name: components/argocd
 site_url: https://docs.karavel.io/components/argocd
 repo_name: projectkaravel/platform-component-argocd
 repo_url: https://github.com/projectkaravel/platform-component-argocd
