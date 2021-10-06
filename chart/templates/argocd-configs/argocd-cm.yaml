@@ -9,30 +9,13 @@ data:
   application.instanceLabelKey: argocd.argoproj.io/instance
   url: {{ required "parameter publicURL is required for generating certificate" .Values.publicURL }}
   admin.enabled: "false"
-  repositories: |
-    - name: karavel
-      type: helm
-      url: https://charts.mikamai.com/karavel
-    - url: {{ .Values.git.repo }}
-    {{- if eq .Values.credentialsSecret.type "ssh"}}
-      sshPrivateKeySecret:
-        name: infrastructure-repo-secret
-        key: sshPrivateKey
-    {{- else }}
-      usernameSecret:
-        name: infrastructure-repo-secret
-        key: username
-      passwordSecret:
-        name: infrastructure-repo-secret
-        key: password
-    {{- end }}
   {{- if .Values.dex.enable }}
     {{- with .Values.dex }}
   oidc.config: |
     name: Dex
     issuer: {{ .issuer }}
-    clientID: argocd-argocd
-    clientSecret: # TODO(matteojoliveau): we need secret reference support (github.com/argoproj/argo-cd/pull/4342) to reference the DexClient-generated secret
+    clientID: $dex-{{ include "argocd.name" . }}-credentials:clientSecret
+    clientSecret: $dex-{{ include "argocd.name" . }}-credentials:clientSecret
     requestedScopes: openid profile email groups
     requestedIDTokenClaims:
       email:
@@ -77,3 +60,4 @@ data:
       ignoreDifferences: |
         jsonPointers:
         - /webhooks/0/clientConfig/caBundle
+  timeout.reconciliation: 180s

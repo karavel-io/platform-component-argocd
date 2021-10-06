@@ -1,16 +1,13 @@
 {{- $url := urlParse (required "parameter publicURL is required for generating certificate" .Values.publicURL) }}
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ include "argocd.name" . }}-server
-  namespace: {{ .Release.Namespace | quote }}
+  namespace: {{ .Release.Namespace }}
   labels:
     app.kubernetes.io/name: {{ include "argocd.name" . }}-server
     {{- include "argocd.labels" . | nindent 4 }}
     app.kubernetes.io/component: server
-  annotations:
-    kubernetes.io/ingress.class: nginx
-    external-dns.alpha.kubernetes.io/cloudflare-proxied: "false"
 spec:
   rules:
     - host: {{ $url.host }}
@@ -18,8 +15,10 @@ spec:
         paths:
           - path: /
             backend:
-              serviceName: {{ include "argocd.name" . }}-server
-              servicePort: server
+              service:
+                name: {{ include "argocd.name" . }}-server
+                port:
+                  name: server
   tls:
     - hosts:
         - {{ $url.host }}

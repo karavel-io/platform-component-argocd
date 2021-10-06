@@ -6,13 +6,15 @@ adminGroup: ""
 
 # creates the infrastructure-repo-secret from the secure backend
 credentialsSecret:
-  backend: secretsManager
+  store:
+    name: default
+    kind: ClusterSecretStore
   key: ""
   type: ssh
 
 # creates the argocd-secret manifest from the secure backend
 secret:
-  backend: secretsManager
+  store: default
   key: ""
 
 dex:
@@ -42,7 +44,7 @@ notifications:
   version: 1.1.1
   # creates the argocd-notifications-secret manifest from the secure backend
   secret:
-    backend: secretsManager
+    store: default
     key: ""
   bot:
     enable: false

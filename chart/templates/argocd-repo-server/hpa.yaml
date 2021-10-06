@@ -2,17 +2,17 @@
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ include "argocd.name" . }}-server-hpa
+  name: {{ include "argocd.name" . }}-repo-server-hpa
   namespace: {{ .Release.Namespace }}
   labels:
-    app.kubernetes.io/name: {{ include "argocd.name" . }}-server-hpa
+    app.kubernetes.io/name: {{ include "argocd.name" . }}-repo-server-hpa
     {{- include "argocd.labels" . | nindent 4 }}
-    app.kubernetes.io/component: server
+    app.kubernetes.io/component: repo-server
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ include "argocd.name" . }}-server
+    name: {{ include "argocd.name" . }}-repo-server
   minReplicas: 2
   maxReplicas: 5
   metrics:

@@ -3,7 +3,7 @@ name: argocd
 description: Argo CD component for Karavel
 type: application
 version: 0.1.0-SNAPSHOT
-appVersion: 2.0.4
+appVersion: 2.1.3
 maintainers:
   - name: MatteoJoliveau
     email: matteo.joliveau@mikamai.com
@@ -18,6 +18,4 @@ annotations:
   karavel.io/dependencies: cert-manager, external-secrets
   prometheus.enable: prometheus
   grafana.enable: grafana
-# We need support for this before enabling it:
-# https://github.com/argoproj/argo-cd/pull/4342
-#  dex.enable: dex
+  dex.enable: dex

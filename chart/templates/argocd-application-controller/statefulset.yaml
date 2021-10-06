@@ -28,11 +28,9 @@ spec:
       - command:
         - argocd-application-controller
         - --status-processors
-        - "20"
+        - "30"
         - --operation-processors
-        - "10"
-        - --app-resync
-        - "180"
+        - "15"
         - --repo-server
         - {{ include "argocd.name" . }}-repo-server:8081
         - --logformat
