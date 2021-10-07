@@ -14,7 +14,7 @@ data:
   oidc.config: |
     name: Karavel
     issuer: {{ required "parameter dex.issuer is required for generating the Dex configuration" .issuer }}
-    clientID: $dex-{{ include "argocd.name" $ }}-credentials:clientSecret
+    clientID: $dex-{{ include "argocd.name" $ }}-credentials:clientID
     clientSecret: $dex-{{ include "argocd.name" $ }}-credentials:clientSecret
     requestedScopes:
       - openid
