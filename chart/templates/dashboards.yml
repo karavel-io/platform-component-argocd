@@ -9,6 +9,7 @@ metadata:
     {{ include "argocd.labels" . | nindent 4 }}
 spec:
   name: argocd
+  json: ""
   configMapRef:
     name: grafana-dashboard-{{ include "argocd.name" . }}
     key: dashboard.json
@@ -24,6 +25,7 @@ metadata:
   {{ include "argocd.labels" . | nindent 4 }}
 spec:
   name: notifications
+  json: ""
   configMapRef:
     name: grafana-dashboard-{{ include "argocd.name" . }}-notifications
     key: dashboard.json
