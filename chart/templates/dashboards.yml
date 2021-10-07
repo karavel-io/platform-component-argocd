@@ -8,7 +8,6 @@ metadata:
     grafana.integreatly.org/instance: grafana-operated
     {{ include "argocd.labels" . | nindent 4 }}
 spec:
-  name: argocd
   json: ""
   configMapRef:
     name: grafana-dashboard-{{ include "argocd.name" . }}
@@ -24,7 +23,6 @@ metadata:
     grafana.integreatly.org/instance: grafana-operated
   {{ include "argocd.labels" . | nindent 4 }}
 spec:
-  name: notifications
   json: ""
   configMapRef:
     name: grafana-dashboard-{{ include "argocd.name" . }}-notifications
