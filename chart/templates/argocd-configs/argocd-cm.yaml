@@ -16,7 +16,11 @@ data:
     issuer: {{ .issuer }}
     clientID: $dex-{{ include "argocd.name" $ }}-credentials:clientSecret
     clientSecret: $dex-{{ include "argocd.name" $ }}-credentials:clientSecret
-    requestedScopes: openid profile email groups
+    requestedScopes:
+      - openid
+      - profile
+      - email
+      - groups
     requestedIDTokenClaims:
       email:
         essential: true
