@@ -12,8 +12,8 @@ data:
   {{- if .Values.dex.enable }}
     {{- with .Values.dex }}
   oidc.config: |
-    name: Dex
-    issuer: {{ .issuer }}
+    name: Karavel
+    issuer: {{ required "parameter dex.issuer is required for generating the Dex configuration" .issuer }}
     clientID: $dex-{{ include "argocd.name" $ }}-credentials:clientSecret
     clientSecret: $dex-{{ include "argocd.name" $ }}-credentials:clientSecret
     requestedScopes:
