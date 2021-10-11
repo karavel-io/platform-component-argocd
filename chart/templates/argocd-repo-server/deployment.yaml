@@ -14,7 +14,9 @@ spec:
       {{- include "argocd.selectorLabels" . | nindent 6 }}
       app.kubernetes.io/component: repo-server
   revisionHistoryLimit: 5
+  {{- if not .Values.prometheus.enable }}
   replicas: 2
+  {{- end }}
   template:
     metadata:
       labels:
