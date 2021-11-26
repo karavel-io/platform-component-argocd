@@ -14,7 +14,9 @@ credentialsSecret:
 
 # creates the argocd-secret manifest from the secure backend
 secret:
-  store: default
+  store:
+    name: default
+    kind: ClusterSecretStore
   key: ""
 
 dex:
