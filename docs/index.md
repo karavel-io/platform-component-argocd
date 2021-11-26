@@ -2,7 +2,7 @@
 
 ![Component version](https://img.shields.io/badge/dynamic/yaml?color=blue&label=component+version&query=$.entries.argocd[0].version&url=https%3A%2F%2Frepository.platform.karavel.io%2Funstable%2Findex.yaml&style=for-the-badge)
 [![Argo CD version](https://img.shields.io/badge/dynamic/yaml?color=blue&label=argocd+version&query=$.entries.argocd[0].appVersion&url=https%3A%2F%2Frepository.platform.karavel.io%2Funstable%2Findex.yaml&style=for-the-badge)](https://argo-cd.readthedocs.io)
-[Documentation](https://docs.karavel.io/components/argocd)
+[Documentation](https://platform.karavel.io/components/argocd)
 
 ## Overview
 
