@@ -23,7 +23,7 @@ spec:
       serviceAccountName: {{ include "argocd.name" . }}-applicationset-controller
       containers:
         - name: argocd-applicationset-controller
-          image: 'quay.io/argocdapplicationset/argocd-applicationset:{{ .Values.applicationSetController.version }}'
+          image: 'quay.io/argoproj/argocd-applicationset:{{ .Values.applicationSetController.version }}'
           imagePullPolicy: Always
           command:
             - applicationset-controller
