@@ -1,4 +1,4 @@
-{{- if and .Values.notifications.enable .Values.notifications.bot.enable }}
+{{- if and .Values.notifications.enable .Values.notifications.bots.slack.enable }}
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:

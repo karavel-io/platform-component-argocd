@@ -1,4 +1,4 @@
-{{- if and .Values.notifications.enable .Values.notifications.bot.enable }}
+{{- if and .Values.notifications.enable .Values.notifications.bots.slack.enable }}
 apiVersion: v1
 kind: Service
 metadata:
