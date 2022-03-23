@@ -47,11 +47,20 @@ spec:
             value: {{ .Values.applicationController.replicas | quote }}
         ports:
         - name: controller
-          containerPort: 8082
+          containerPort: &port 8082
           protocol: TCP
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: *port
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          timeoutSeconds: 1
+          successThreshold: 1
+          failureThreshold: 3
         readinessProbe:
           tcpSocket:
-            port: 8082
+            port: *port
           initialDelaySeconds: 10
           periodSeconds: 10
           timeoutSeconds: 1

@@ -25,11 +25,17 @@ spec:
     spec:
       containers:
         - name: argocd-notifications-controller
-          image: argoprojlabs/argocd-notifications:v{{.Values.notifications.version}}
+          image: "quay.io/argoproj/argocd:v{{ .Chart.AppVersion }}"
           imagePullPolicy: Always
           command:
-            - /app/argocd-notifications-backend
-            - controller
+            - argocd-notifications
+            - --loglevel=text
+            - --loglevel=info
+            - --metrics-port=9001
+            - --namespace={{ .Release.Namespace }}
+            - --argocd-repo-server={{ include "argocd.name" . }}-repo-server:8081
+            - --secret-name={{ include "argocd.name" . }}-notifications-secret
+            - --config-map-name={{ include "argocd.name" . }}-notifications-cm
           workingDir: /app
           ports:
             - name: metrics

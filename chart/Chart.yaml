@@ -3,7 +3,7 @@ name: argocd
 description: Argo CD component for Karavel
 type: application
 version: 1.0.0
-appVersion: 2.2.5
+appVersion: 2.3.2
 maintainers:
   - name: MatteoJoliveau
     email: matteo.joliveau@mikamai.com

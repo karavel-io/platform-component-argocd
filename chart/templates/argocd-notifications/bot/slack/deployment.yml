@@ -25,10 +25,10 @@ spec:
     spec:
       containers:
         - name: {{ include "argocd.name" . }}-notifications-bot
-          image: argoprojlabs/argocd-notifications:v{{.Values.notifications.version}}
+          image: "quay.io/argoproj/argocd:v{{ .Chart.AppVersion }}"
           imagePullPolicy: Always
           command:
-            - /app/argocd-notifications-backend
+            - argocd-notifications
             - bot
           workingDir: /app
           ports:

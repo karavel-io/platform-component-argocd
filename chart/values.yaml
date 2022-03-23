@@ -11,6 +11,8 @@ credentialsSecret:
     kind: ClusterSecretStore
   key: ""
   type: ssh
+  url:
+  template: false
 
 # creates the argocd-secret manifest from the secure backend
 secret:
@@ -43,16 +45,16 @@ applicationController:
 
 notifications:
   enable: false
-  version: 1.1.1
   # creates the argocd-notifications-secret manifest from the secure backend
   secret:
     store:
       name: default
       kind: ClusterSecretStore
     key: ""
-  bot:
-    enable: false
-    publicURL:
+  bots:
+    slack:
+      enable: false
+      publicURL:
 
 redis:
   version: 6.0.9
@@ -64,4 +66,4 @@ grafana:
   enable: true
 
 applicationSetController:
-  version: v0.2.0
+  version: v0.4.1

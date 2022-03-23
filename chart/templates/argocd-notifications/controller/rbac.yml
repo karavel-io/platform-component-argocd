@@ -31,7 +31,7 @@ rules:
   - apiGroups:
       - ""
     resourceNames:
-      - argocd-notifications-cm
+      - {{ include "argocd.name" . }}-notifications-cm
     resources:
       - configmaps
     verbs:
@@ -39,7 +39,7 @@ rules:
   - apiGroups:
       - ""
     resourceNames:
-      - argocd-notifications-secret
+      - {{ include "argocd.name" . }}-notifications-secret
     resources:
       - secrets
     verbs:

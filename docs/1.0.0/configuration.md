@@ -19,8 +19,10 @@ component "argocd" {
       name = "default"
       kind = "ClusterSecretStore"
     }
-    key = ""      # required, should be the store-specific key to the secret, e.g. the Vault or AWS Secrets Manager key
-    type = "ssh"  # values: ssh or password
+    key = ""          # required, should be the store-specific key to the secret, e.g. the Vault or AWS Secrets Manager key
+    type = "ssh"      # optional, values: ssh or password
+    url = ""          # optional, overrides git.repo in the credential secret
+    template = false  # optional, configures the secret as a credentials template, allowing to pass a git namespace as the url above when true (e.g. git@github.com:my-org)
   }
 
   secret = {
