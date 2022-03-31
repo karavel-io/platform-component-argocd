@@ -54,14 +54,27 @@ rules:
       - update
       - watch
   - apiGroups:
-      - ''
+      - ""
     resources:
       - secrets
-      - configmaps
     verbs:
       - get
       - list
       - watch
+  - apiGroups:
+      - ""
+      - coordination.k8s.io
+    resources:
+      - configmaps
+      - leases
+    verbs:
+      - get
+      - list
+      - watch
+      - create
+      - update
+      - patch
+      - delete
   - apiGroups:
       - apps
       - extensions
