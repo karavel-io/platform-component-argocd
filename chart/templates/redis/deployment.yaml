@@ -44,7 +44,7 @@ spec:
         - ""
         - --appendonly
         - "no"
-        image: "quay.io/bitnami/redis:{{ .Values.redis.version }}"
+        image: "public.ecr.aws/bitnami/redis:{{ .Values.redis.version }}"
         imagePullPolicy: IfNotPresent
         env:
           - name: ALLOW_EMPTY_PASSWORD
