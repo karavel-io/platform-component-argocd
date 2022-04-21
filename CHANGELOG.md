@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Changed Redis image from `quay.io/bitnami/redis` to `public.ecr.aws/bitnami/redis` after Bitnami removed their images from Quay
+- Update pods resource quotas after production testing and fine-tuning to improve efficiency
+
 ## [1.0.1] - 2022-03-31
 
 ### Fixed
