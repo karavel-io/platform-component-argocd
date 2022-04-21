@@ -68,9 +68,8 @@ spec:
           failureThreshold: 3
         resources:
           requests:
-            cpu: "2"
-            memory: 3Gi
+            memory: 1Gi
           limits:
-            cpu: "2"
-            memory: 3Gi
+            cpu: "1"
+            memory: 1Gi
       serviceAccountName: {{ include "argocd.name" . }}-application-controller
