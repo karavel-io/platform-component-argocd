@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Update pods resource quotas after production testing and fine-tuning to improve efficiency
+- Added `namespace: argocd` to [values.yaml](chart/values.yaml) as required by [Karavel CLI 0.4](https://github.com/karavel-io/cli/releases/tag/v0.4.0)
 - Updated to [ArgoCD v2.4.2](https://github.com/argoproj/argo-cd/releases/tag/v2.4.2)
   - Tightened some security context params
   - Added support for OpenTelemetry by pushing traces to [Tempo](https://github.com/karavel-io/platform-component-tempo)
