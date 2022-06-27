@@ -66,12 +66,11 @@ spec:
           periodSeconds: 10
           failureThreshold: 2
         resources:
-          requests:
-            cpu: 200m
-            memory: 256Mi
           limits:
-            cpu: 500m
             memory: 512Mi
+          requests:
+            cpu: 300m
+            memory: 256Mi
       volumes:
       - configMap:
           name: {{ include "argocd.name" . }}-ssh-known-hosts-cm
