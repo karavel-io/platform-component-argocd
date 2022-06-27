@@ -23,16 +23,17 @@ spec:
       serviceAccountName: {{ include "argocd.name" . }}-applicationset-controller
       containers:
         - name: argocd-applicationset-controller
-          image: 'quay.io/argoproj/argocd-applicationset:{{ .Values.applicationSetController.version }}'
+          image: 'quay.io/argoproj/argocd:{{ .Values.applicationSetController.version }}'
           imagePullPolicy: IfNotPresent
           command:
-            - applicationset-controller
-            - --metrics-addr=:8080
-            - --probe-addr=:8081
-            - --enable-leader-election=true
-            - --namespace={{ .Release.Namespace }}
-            - --argocd-repo-server={{ include "argocd.name" . }}-repo-server:8081
-            - --policy=sync
+            - sh
+            - -c
+            - entrypoint.sh applicationset-controller --metrics-addr=:8080 --probe-addr=:8081 --enable-leader-election=true --argocd-repo-server={{ include "argocd.name" . }}-repo-server:8081 --policy=sync --logformat text --loglevel info
+          env:
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
           ports:
             - name: http
               containerPort: 8081
@@ -49,6 +50,13 @@ spec:
             requests:
               cpu: 100m
               memory: 128Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            capabilities:
+              drop:
+                - all
           volumeMounts:
             - mountPath: /app/config/ssh
               name: ssh-known-hosts
@@ -58,15 +66,20 @@ spec:
               name: gpg-keys
             - mountPath: /app/config/gpg/keys
               name: gpg-keyring
+            - mountPath: /tmp
+              name: tmp
       volumes:
-        - configMap:
+        - name: ssh-known-hosts
+          configMap:
             name: {{ include "argocd.name" . }}-ssh-known-hosts-cm
-          name: ssh-known-hosts
-        - configMap:
+        - name: tls-certs
+          configMap:
             name:  {{ include "argocd.name" . }}-tls-certs-cm
-          name: tls-certs
-        - configMap:
+        - name: gpg-keys
+          configMap:
             name:  {{ include "argocd.name" . }}-gpg-keys-cm
-          name: gpg-keys
-        - emptyDir: {}
-          name: gpg-keyring
+        - name: gpg-keyring
+          emptyDir: {}
+        - name: tmp
+          emptyDir:
+            medium: Memory

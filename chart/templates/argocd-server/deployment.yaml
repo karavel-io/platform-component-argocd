@@ -42,11 +42,20 @@ spec:
         - --redis
         - {{ include "argocd.name" . }}-redis:6379
         - --insecure
+        {{- if .Values.tracing.enable }}
+        env:
+          - name: ARGOCD_SERVER_OTLP_ADDRESS
+            value: {{ .Values.tracing.endpoint }}
+        {{- end }}
         volumeMounts:
-        - mountPath: /app/config/ssh
-          name: ssh-known-hosts
-        - mountPath: /app/config/tls                                                                                                                        │
-          name: tls-certs
+          - name: ssh-known-hosts
+            mountPath: /app/config/ssh
+          - name: tls-certs
+            mountPath: /app/config/tls                                                                                                                        │
+          - mountPath: /home/argocd
+            name: plugins-home
+          - mountPath: /tmp
+            name: tmp
         ports:
         - name: https
           containerPort: 443
@@ -75,6 +84,13 @@ spec:
           timeoutSeconds: 1
           successThreshold: 1
           failureThreshold: 3
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          capabilities:
+            drop:
+              - all
         resources:
           limits:
             memory: 128Mi
@@ -83,6 +99,10 @@ spec:
             memory: 128Mi
       serviceAccountName: {{ include "argocd.name" . }}-server
       volumes:
+      - emptyDir: { }
+        name: plugins-home
+      - emptyDir: { }
+        name: tmp
       - emptyDir: {}
         name: static-files
       - configMap:
@@ -93,3 +113,18 @@ spec:
           defaultMode: 420
           name: {{ include "argocd.name" . }}-tls-certs-cm
         name: tls-certs
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/name: argocd-server
+                topologyKey: kubernetes.io/hostname
+            - weight: 5
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/part-of: argocd
+                topologyKey: kubernetes.io/hostname

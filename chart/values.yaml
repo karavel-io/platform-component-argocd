@@ -1,5 +1,6 @@
 namespace: argocd
 
+
 publicURL:
 git:
   repo:
@@ -67,5 +68,6 @@ prometheus:
 grafana:
   enable: true
 
-applicationSetController:
-  version: v0.4.1
+tracing:
+  enable: false
+  endpoint: tempo.monitoring.svc.cluster.local:4317

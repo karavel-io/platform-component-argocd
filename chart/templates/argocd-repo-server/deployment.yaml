@@ -24,30 +24,39 @@ spec:
         {{- include "argocd.labels" . | nindent 8 }}
         app.kubernetes.io/component: repo-server
     spec:
+      serviceAccountName: {{ include "argocd.name" . }}-repo-server
+      automountServiceAccountToken: false
       priorityClassName: system-cluster-critical
       containers:
       - name: repo-server
         image: "quay.io/argoproj/argocd:v{{ .Chart.AppVersion }}"
         imagePullPolicy: IfNotPresent
         securityContext:
+          runAsNonRoot: true
+          readOnlyRootFilesystem: true
           allowPrivilegeEscalation: false
           capabilities:
             drop:
               - all
         command:
-        - uid_entrypoint.sh
-        - argocd-repo-server
-        - --redis
-        - {{ include "argocd.name" . }}-redis:6379
-        - --logformat
-        - text
-        - --loglevel
-        - info
+        - sh
+        - -c
+        - entrypoint.sh argocd-repo-server --redis {{ include "argocd.name" . }}-redis:6379 --logformat text --loglevel info
         volumeMounts:
-        - mountPath: /app/config/ssh
-          name: ssh-known-hosts
-        - mountPath: /tmp
-          name: tmp
+        - name: ssh-known-hosts
+          mountPath: /app/config/ssh
+        - name: tls-certs
+          mountPath: /app/config/tls
+        - name: gpg-keys
+          mountPath: /app/config/gpg/source
+        - name: gpg-keyring
+          mountPath: /app/config/gpg/keys
+        - name: tmp
+          mountPath: /tmp
+        - mountPath: /helm-working-dir
+          name: helm-working-dir
+        - mountPath: /home/argocd/cmp-server/plugins
+          name: plugins
         ports:
         - name: repo-server
           containerPort: 8081
@@ -58,6 +67,17 @@ spec:
         env:
           - name: TMPDIR
             value: /tmp
+          {{- if .Values.tracing.enable }}
+          - name: ARGOCD_REPO_SERVER_OTLP_ADDRESS
+            value: {{ .Values.tracing.endpoint }}
+          {{- end }}
+        livenessProbe:
+          httpGet:
+            path: /healthz?full=true
+            port: 8084
+          initialDelaySeconds: 30
+          periodSeconds: 5
+          failureThreshold: 3
         readinessProbe:
           httpGet:
             path: /healthz
@@ -72,9 +92,58 @@ spec:
             cpu: 300m
             memory: 256Mi
       volumes:
-      - configMap:
+      - name: ssh-known-hosts
+        configMap:
           name: {{ include "argocd.name" . }}-ssh-known-hosts-cm
-        name: ssh-known-hosts
       - name: tmp
         emptyDir:
           medium: Memory
+      - name: tls-certs
+        configMap:
+          name: {{ include "argocd.name" . }}--tls-certs-cm
+      - name: gpg-keys
+        configMap:
+          name: {{ include "argocd.name" . }}--gpg-keys-cm
+      - name: gpg-keyring
+        emptyDir: { }
+      - name: tmp
+        emptyDir: { }
+      - name: helm-working-dir
+        emptyDir: { }
+      - emptyDir: { }
+        name: var-files
+      - emptyDir: { }
+        name: plugins
+      initContainers:
+        - command:
+            - cp
+            - -n
+            - /usr/local/bin/argocd
+            - /var/run/argocd/argocd-cmp-server
+          image: quay.io/argoproj/argocd:latest
+          name: copyutil
+          securityContext:
+            runAsNonRoot: true
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - all
+          volumeMounts:
+            - mountPath: /var/run/argocd
+              name: var-files
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/name: argocd-repo-server
+                topologyKey: kubernetes.io/hostname
+            - weight: 5
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/part-of: argocd
+                topologyKey: kubernetes.io/hostname

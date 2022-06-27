@@ -42,9 +42,21 @@ spec:
         image: "quay.io/argoproj/argocd:v{{ .Chart.AppVersion }}"
         imagePullPolicy: IfNotPresent
         name: application-controller
+        securityContext:
+          runAsNonRoot: true
+          readOnlyRootFilesystem: true
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - all
+        workingDir: /home/argocd
         env:
           - name: ARGOCD_CONTROLLER_REPLICAS
             value: {{ .Values.applicationController.replicas | quote }}
+          {{- if .Values.tracing.enable }}
+          - name: ARGOCD_APPLICATION_CONTROLLER_OTLP_ADDRESS
+            value: {{ .Values.tracing.endpoint }}
+          {{- end }}
         ports:
         - name: controller
           containerPort: &port 8082
@@ -59,7 +71,8 @@ spec:
           successThreshold: 1
           failureThreshold: 3
         readinessProbe:
-          tcpSocket:
+          httpGet:
+            path: /healthz
             port: *port
           initialDelaySeconds: 10
           periodSeconds: 10
@@ -72,4 +85,10 @@ spec:
           limits:
             cpu: "1"
             memory: 1Gi
+        volumeMounts:
+          - name: argocd-home
+            mountPath: /home/argocd
       serviceAccountName: {{ include "argocd.name" . }}-application-controller
+      volumes:
+        - emptyDir: { }
+          name: argocd-home
