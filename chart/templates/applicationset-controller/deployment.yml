@@ -28,7 +28,7 @@ spec:
           command:
             - sh
             - -c
-            - entrypoint.sh applicationset-controller --metrics-addr=:8080 --probe-addr=:8081 --enable-leader-election=true --argocd-repo-server={{ include "argocd.name" . }}-repo-server:8081 --policy=sync --logformat text --loglevel info
+            - entrypoint.sh argocd-applicationset-controller --metrics-addr=:8080 --probe-addr=:8081 --enable-leader-election=true --argocd-repo-server={{ include "argocd.name" . }}-repo-server:8081 --policy=sync --logformat text --loglevel info
           env:
             - name: NAMESPACE
               valueFrom:
