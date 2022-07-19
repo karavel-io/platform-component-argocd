@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.3] - 2022-07-19
+
+### Fixed
+
+- Remove duplicate tmp directive in argocd-repo-server
+- Fix wrong configmaps names in argocd-repo-server
+- Invert CPU quotas between requests and limits in argocd-application-controller
+
 ## [1.1.2] - 2022-07-19
 
 ### Fixed
