@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [1.2.0] - 2023-02-03
+## [1.1.4] - 2023-02-03
 
 ### Changed
 
@@ -65,7 +65,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Initial release
 
 [unreleased]: https://github.com/karavel-io/platform-component-argocd/compare/1.1.1...HEAD
-[1.2.0]: https://github.com/karavel-io/platform-component-argocd/compare/1.1.0...1.2.0
+[1.1.4]: https://github.com/karavel-io/platform-component-argocd/compare/1.1.0...1.1.4
+[1.1.3]: https://github.com/karavel-io/platform-component-argocd/compare/1.1.0...1.1.3
+[1.1.2]: https://github.com/karavel-io/platform-component-argocd/compare/1.1.0...1.1.2
 [1.1.1]: https://github.com/karavel-io/platform-component-argocd/compare/1.1.0...1.1.1
 [1.1.0]: https://github.com/karavel-io/platform-component-argocd/compare/1.0.2...1.1.0
 [1.0.2]: https://github.com/karavel-io/platform-component-argocd/compare/1.0.1...1.0.2
