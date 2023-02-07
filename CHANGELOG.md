@@ -7,13 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0] - 2023-02-06
+
+### Changed
+
+- Updated to [ArgoCD v2.5.5](https://github.com/argoproj/argo-cd/releases/tag/v2.5.5)
+  - Updated Helm to 3.10.x
+  - Updated Redis to 7.0.8
+  - Updated ArgoCD CRDs
+
 ## [1.1.4] - 2023-02-03
 
 ### Changed
 
 - Updated to [ArgoCD v2.4.22](https://github.com/argoproj/argo-cd/releases/tag/v2.4.22)
   - Added Dex 2.35.x compatibility (following a Dex high severity security patch)
-  - Updated Helm to 3.9.x
   - Updated ArgoCD CRDs
 
 ## [1.1.3] - 2022-07-19
@@ -65,6 +73,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Initial release
 
 [unreleased]: https://github.com/karavel-io/platform-component-argocd/compare/1.1.1...HEAD
+[1.2.0]: https://github.com/karavel-io/platform-component-argocd/compare/1.1.0...1.2.0
 [1.1.4]: https://github.com/karavel-io/platform-component-argocd/compare/1.1.0...1.1.4
 [1.1.3]: https://github.com/karavel-io/platform-component-argocd/compare/1.1.0...1.1.3
 [1.1.2]: https://github.com/karavel-io/platform-component-argocd/compare/1.1.0...1.1.2
