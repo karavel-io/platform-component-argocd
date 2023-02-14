@@ -2,7 +2,7 @@ apiVersion: v2
 name: argocd
 description: Argo CD component for Karavel
 type: application
-version: 1.2.1-SNAPSHOT
+version: 1.2.1
 appVersion: 2.5.5
 maintainers:
   - name: MatteoJoliveau
